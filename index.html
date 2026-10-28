@@ -134,11 +134,61 @@
     let timeLeft = CYCLE_TIME;
     let timerId = null;
     let isRunning = false;
-    let audioCtx = null;
-    let hasSoundPlayedCurrentLap = false;
-    let isFirstStart = true;
     let castCount = 0;
 
-    function playChimeSound() {
-        try {
-            if (!audioCtx
+    function updateDisplay() {
+        const displayElem = document.getElementById('display');
+        displayElem.innerText = Math.ceil(timeLeft);
+        
+        if (timeLeft <= 12) {
+            displayElem.classList.add('warning');
+        } else {
+            displayElem.classList.remove('warning');
+        }
+    }
+
+    function incrementCastCount() {
+        castCount++;
+        document.getElementById('castCount').innerText = castCount;
+    }
+
+    function toggleTimer() {
+        if (isRunning) {
+            clearInterval(timerId);
+            document.getElementById('startBtn').innerText = '繼續';
+            isRunning = false;
+        } else {
+            isRunning = true;
+            document.getElementById('startBtn').innerText = '暫停';
+            
+            let lastTime = Date.now();
+            timerId = setInterval(() => {
+                const now = Date.now();
+                const delta = (now - lastTime) / 1000;
+                lastTime = now;
+                
+                timeLeft -= delta;
+
+                if (timeLeft <= 0) {
+                    timeLeft = CYCLE_TIME + timeLeft;
+                    incrementCastCount();
+                }
+
+                updateDisplay();
+            }, 100);
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        timeLeft = CYCLE_TIME;
+        castCount = 0;
+        document.getElementById('castCount').innerText = '0';
+        document.getElementById('startBtn').innerText = '開始';
+        updateDisplay();
+    }
+</script>
+
+</body>
+</html>
