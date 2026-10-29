@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>祈禱計時器 - 81.7秒</title>
+    <title>祈禱計時器 - 81.7秒版本</title>
     <style>
         * {
             font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
@@ -130,7 +130,12 @@
 </div>
 
 <script>
-    const CYCLE_TIME = 81.7; /* ⬅️ 操控循環時間的秒數，未來若要更改秒數直接改這裡即可 */
+    /* ----------------------------------------------------
+       👇 這一行就是用來操控 81.7 秒循環時間的程式碼
+       未來若要更改秒數，直接修改這個數字即可
+       ---------------------------------------------------- */
+    const CYCLE_TIME = 81.7;
+
     let timeLeft = CYCLE_TIME;
     let timerId = null;
     let isRunning = false;
@@ -217,4 +222,34 @@
                 
                 timeLeft -= delta;
 
-                if (timeLeft <= 12 && !has
+                if (timeLeft <= 12 && !hasSoundPlayedCurrentLap) {
+                    playChimeSound();
+                    hasSoundPlayedCurrentLap = true;
+                }
+
+                if (timeLeft <= 0) {
+                    timeLeft = CYCLE_TIME + timeLeft;
+                    hasSoundPlayedCurrentLap = false;
+                    incrementCastCount();
+                }
+
+                updateDisplay();
+            }, 100);
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        timeLeft = CYCLE_TIME;
+        hasSoundPlayedCurrentLap = false;
+        isFirstStart = true;
+        castCount = 0;
+        document.getElementById('castCount').innerText = '0';
+        document.getElementById('startBtn').innerText = '開始';
+        updateDisplay();
+    }
+</script>
+
+</body>
+</html>
