@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>祈禱計時器 - 81.7秒版本</title>
+    <title>祈禱計時器 - 81.6秒版本</title>
     <style>
         * {
             font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
@@ -115,7 +115,7 @@
         <img class="title-icon" src="https://cdn.yampiz.com/_rdsk/maple/skill/sk_03015.png" alt="祈禱圖示" />
         <h1>祈禱計時器</h1>
     </div>
-    <div class="sub-subtitle">81.7秒版本</div>
+    <div class="sub-subtitle">81.6秒版本</div>
     <div class="timer-display" id="display">82</div>
     <div class="controls">
         <button id="startBtn" onclick="toggleTimer()">開始</button>
@@ -131,10 +131,10 @@
 
 <script>
     /* ----------------------------------------------------
-       👇 這一行就是用來操控 81.7 秒循環時間的程式碼
+       👇 這一行就是用來操控 81.6 秒循環時間的程式碼
        未來若要更改秒數，直接修改這個數字即可
        ---------------------------------------------------- */
-    const CYCLE_TIME = 81.7;
+    const CYCLE_TIME = 81.6;
 
     let timeLeft = CYCLE_TIME;
     let timerId = null;
@@ -203,53 +203,4 @@
         if (isRunning) {
             clearInterval(timerId);
             document.getElementById('startBtn').innerText = '繼續';
-            isRunning = false;
-        } else {
-            if (isFirstStart) {
-                playChimeSound();
-                incrementCastCount();
-                isFirstStart = false;
-            }
-
-            isRunning = true;
-            document.getElementById('startBtn').innerText = '暫停';
-            
-            let lastTime = Date.now();
-            timerId = setInterval(() => {
-                const now = Date.now();
-                const delta = (now - lastTime) / 1000;
-                lastTime = now;
-                
-                timeLeft -= delta;
-
-                if (timeLeft <= 12 && !hasSoundPlayedCurrentLap) {
-                    playChimeSound();
-                    hasSoundPlayedCurrentLap = true;
-                }
-
-                if (timeLeft <= 0) {
-                    timeLeft = CYCLE_TIME + timeLeft;
-                    hasSoundPlayedCurrentLap = false;
-                    incrementCastCount();
-                }
-
-                updateDisplay();
-            }, 100);
-        }
-    }
-
-    function resetTimer() {
-        clearInterval(timerId);
-        isRunning = false;
-        timeLeft = CYCLE_TIME;
-        hasSoundPlayedCurrentLap = false;
-        isFirstStart = true;
-        castCount = 0;
-        document.getElementById('castCount').innerText = '0';
-        document.getElementById('startBtn').innerText = '開始';
-        updateDisplay();
-    }
-</script>
-
-</body>
-</html>
+            isRunning =
