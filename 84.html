@@ -144,7 +144,7 @@
     let isFirstStart = true;
     let castCount = 0;
 
-    function playChimeSound() {
+    window.playChimeSound = function() {
         try {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -183,7 +183,7 @@
         }
     }
 
-    function updateDisplay() {
+    window.updateDisplay = function() {
         const displayElem = document.getElementById('display');
         displayElem.innerText = Math.ceil(timeLeft);
         
@@ -194,13 +194,62 @@
         }
     }
 
-    function incrementCastCount() {
+    window.incrementCastCount = function() {
         castCount++;
         document.getElementById('castCount').innerText = castCount;
     }
 
-    function toggleTimer() {
+    window.toggleTimer = function() {
         if (isRunning) {
             clearInterval(timerId);
             document.getElementById('startBtn').innerText = '繼續';
-            isRunning =
+            isRunning = false;
+        } else {
+            if (isFirstStart) {
+                playChimeSound();
+                incrementCastCount();
+                isFirstStart = false;
+            }
+
+            isRunning = true;
+            document.getElementById('startBtn').innerText = '暫停';
+            
+            let lastTime = Date.now();
+            timerId = setInterval(() => {
+                const now = Date.now();
+                const delta = (now - lastTime) / 1000;
+                lastTime = now;
+                
+                timeLeft -= delta;
+
+                if (timeLeft <= 12 && !hasSoundPlayedCurrentLap) {
+                    playChimeSound();
+                    hasSoundPlayedCurrentLap = true;
+                }
+
+                if (timeLeft <= 0) {
+                    timeLeft = CYCLE_TIME + timeLeft;
+                    hasSoundPlayedCurrentLap = false;
+                    incrementCastCount();
+                }
+
+                updateDisplay();
+            }, 100);
+        }
+    }
+
+    window.resetTimer = function() {
+        clearInterval(timerId);
+        isRunning = false;
+        timeLeft = CYCLE_TIME;
+        hasSoundPlayedCurrentLap = false;
+        isFirstStart = true;
+        castCount = 0;
+        document.getElementById('castCount').innerText = '0';
+        document.getElementById('startBtn').innerText = '開始';
+        updateDisplay();
+    }
+</script>
+
+</body>
+</html>
