@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>祈禱計時器 - 90.6秒版本</title>
+    <title>祈禱計時器 - 117.302秒</title>
     <style>
         * {
             font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
@@ -115,11 +115,11 @@
         <img class="title-icon" src="https://cdn.yampiz.com/_rdsk/maple/skill/sk_03015.png" alt="祈禱圖示" />
         <h1>祈禱計時器</h1>
     </div>
-    <div class="sub-subtitle">90.6秒版本</div>
-    <div class="timer-display" id="display">91</div>
+    <div class="sub-subtitle">117.302秒版本</div>
+    <div class="timer-display" id="display">118</div>
     <div class="controls">
-        <button id="startBtn">開始</button>
-        <button id="resetBtn">重置</button>
+        <button id="startBtn" onclick="toggleTimer()">開始</button>
+        <button id="resetBtn" onclick="resetTimer()">重置</button>
     </div>
     <div class="counter-section">
         <span>已放</span>
@@ -130,12 +130,7 @@
 </div>
 
 <script>
-    /* ----------------------------------------------------
-       👇 這一行就是用來操控 90.6 秒循環時間的程式碼
-       未來若要更改秒數，直接修改這個數字即可
-       ---------------------------------------------------- */
-    const CYCLE_TIME = 90.6;
-
+    const CYCLE_TIME = 90.6; /* ⬅️ 操控循環時間的秒數，未來若要更改秒數直接改這裡即可 */
     let timeLeft = CYCLE_TIME;
     let timerId = null;
     let isRunning = false;
@@ -249,13 +244,6 @@
         document.getElementById('startBtn').innerText = '開始';
         updateDisplay();
     }
-
-    // 透過監聽器直接綁定按鈕，避免 onclick 屬性失效
-    window.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('startBtn').addEventListener('click', toggleTimer);
-        document.getElementById('resetBtn').addEventListener('click', resetTimer);
-        updateDisplay();
-    });
 </script>
 
 </body>
