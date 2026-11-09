@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>祈禱計時器 - 90.7秒</title>
+    <title id="pageTitle">祈禱計時器</title>
     <style>
         * {
             font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
@@ -115,8 +115,9 @@
         <img class="title-icon" src="https://cdn.yampiz.com/_rdsk/maple/skill/sk_03015.png" alt="祈禱圖示" />
         <h1>祈禱計時器</h1>
     </div>
-    <div class="sub-subtitle">90.7秒版本</div>
-    <div class="timer-display" id="display">118</div>
+    <!-- 這裡的文字會由程式自動帶入 -->
+    <div class="sub-subtitle" id="subSubtitle">載入中...</div>
+    <div class="timer-display" id="display">0</div>
     <div class="controls">
         <button id="startBtn" onclick="toggleTimer()">開始</button>
         <button id="resetBtn" onclick="resetTimer()">重置</button>
@@ -130,7 +131,12 @@
 </div>
 
 <script>
-    const CYCLE_TIME = 90.7; /* ⬅️ 操控循環時間的秒數，未來若要更改秒數直接改這裡即可 */
+    /* ==========================================================
+       👇【唯一需要修改的地方】
+       未來只要在這裡改秒數，網頁標題、副標題與計時就會自動全部同步！
+       ========================================================== */
+    const CYCLE_TIME = 100;
+
     let timeLeft = CYCLE_TIME;
     let timerId = null;
     let isRunning = false;
@@ -138,6 +144,13 @@
     let hasSoundPlayedCurrentLap = false;
     let isFirstStart = true;
     let castCount = 0;
+
+    // 自動把秒數套用到畫面的標題與副標題
+    document.addEventListener("DOMContentLoaded", () => {
+        document.title = `祈禱計時器 - ${CYCLE_TIME}秒版本`;
+        document.getElementById('subSubtitle').innerText = `${CYCLE_TIME}秒版本`;
+        updateDisplay();
+    });
 
     function playChimeSound() {
         try {
